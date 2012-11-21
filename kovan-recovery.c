@@ -5,19 +5,19 @@
 void kovan_recovery()
 {
 	if(!flash_drive_mount()) {
-		ERROR("Failed to mount flash drive.");
+		LOG_ERROR("Failed to mount flash drive.");
 		return;
 	}
 	if(flash_drive_update_type() == none) {
-		ERROR("No update detected on flash drive.");
+		LOG_ERROR("No update detected on flash drive.");
 		return;
 	}
 	FILE *fptr = flash_drive_update();
 	if(!fptr) {
-		ERROR("Failed to open update file.");
+		LOG_ERROR("Failed to open update file.");
 		return;
 	}
-	image_write(fptr);
+	image_write(fptr, 0);
 	fclose(fptr);
 	flash_drive_umount();
 }

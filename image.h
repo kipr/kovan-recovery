@@ -3,6 +3,8 @@
 
 #include <stdio.h>
 
-int write_image(FILE *in, struct progress *reporter);
+#include "progress.h"
+
+int image_write(FILE *in, struct progress *reporter);
 
 #endif

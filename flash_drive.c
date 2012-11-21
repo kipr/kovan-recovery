@@ -3,16 +3,19 @@
 
 #define FLASH_DRIVE_UPDATE "/mnt/kovan_update.img"
 
-int flash_drive_mount() {
+int flash_drive_mount(void)
+{
+#ifdef __linux__
 	if(mount("/dev/sda1", "/mnt", "vfat", MS_NOATIME, NULL)) {
-		PERROR("Mounting flash drive failed.");
+		LOG_PERROR("Mounting flash drive failed.");
 		return 0;
 	}
-	NOTE("Mounted flash drive.");
+	LOG_NOTE("Mounted flash drive.");
+#endif
 	return 1;
 }
 
-enum update_type flash_drive_update_type()
+enum update_type flash_drive_update_type(void)
 {
 	FILE *fptr = flash_drive_update();
 	if(!fptr) return none;
@@ -20,12 +23,15 @@ enum update_type flash_drive_update_type()
 	return image;
 }
 
-FILE *flash_drive_update()
+FILE *flash_drive_update(void)
 {
 	return fopen(FLASH_DRIVE_UPDATE, "r");
 }
 
-int flash_drive_umount()
+int flash_drive_umount(void)
 {
+#ifdef __linux__
 	umount("/mnt")
+#endif
+	return 1;
 }
