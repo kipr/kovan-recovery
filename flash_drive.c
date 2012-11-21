@@ -1,4 +1,5 @@
 #include "flash_drive.h"
+#include "log.h"
 #include <sys/mount.h>
 
 #define FLASH_DRIVE_UPDATE "/mnt/kovan_update.img"
@@ -31,7 +32,7 @@ FILE *flash_drive_update(void)
 int flash_drive_umount(void)
 {
 #ifdef __linux__
-	umount("/mnt")
+	umount("/mnt");
 #endif
 	return 1;
 }
