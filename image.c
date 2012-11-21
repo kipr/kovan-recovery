@@ -22,7 +22,7 @@ int image_write(FILE *in, struct progress *reporter)
 		LOG_PERROR("Reading block failed");
 		return 0;
 	}
-	LOG_NOTE("Copied %lu bytes to internal memory card.", total);
+	LOG_NOTE("Copied %u bytes to internal memory card.", total);
 	fclose(out);
 	return 1;
 }
