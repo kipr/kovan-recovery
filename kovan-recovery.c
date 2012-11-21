@@ -2,6 +2,11 @@
 #include "flash_drive.h"
 #include "image.h"
 
+void progress(double fraction)
+{
+	fprintf(stdout, "%lf%% done.\n", fraction * 100.0);
+}
+
 void kovan_recovery()
 {
 	if(!flash_drive_mount()) {
@@ -13,11 +18,12 @@ void kovan_recovery()
 		return;
 	}
 	FILE *fptr = flash_drive_update();
+	
 	if(!fptr) {
 		LOG_ERROR("Failed to open update file.");
 		return;
 	}
-	image_write(fptr, 0);
+	image_write(fptr, progress);
 	fclose(fptr);
 	flash_drive_umount();
 }
