@@ -85,7 +85,6 @@ void draw_string(char *str, int x, int y, struct pixel p, struct framebuffer *fb
 				// printf("\tValue at (%d, %d) = %d\n", cx, cy, l);
 				struct pixel mod = pixel_create(lf * p.r, lf * p.g, lf * p.b);
 				// printf("%d, %d, %d\n", mod.r, mod.g, mod.b);
-				const int height = ey - sy;
 				framebuffer_write_pixel(x + px + cd->x0, y + py + cd->y0, mod, fb);
 			}
 		}
