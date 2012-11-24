@@ -50,7 +50,7 @@ struct pixel pixel_create(unsigned char r, unsigned char g, unsigned char b)
 static unsigned char fontpixels[STB_SOMEFONT_BITMAP_HEIGHT][STB_SOMEFONT_BITMAP_WIDTH];
 static stb_fontchar fontdata[STB_SOMEFONT_NUM_CHARS];
 
-static unsigned int string_width(char *str)
+unsigned int string_width(char *str)
 {
 	unsigned int x = 0;
 	while (*str) {
@@ -59,7 +59,7 @@ static unsigned int string_width(char *str)
 	return x;
 }
 
-static void draw_string(char *str, int x, int y, struct pixel p, struct framebuffer *fb)
+void draw_string(char *str, int x, int y, struct pixel p, struct framebuffer *fb)
 {
 	while (*str) {
 		int char_codepoint = *str++;

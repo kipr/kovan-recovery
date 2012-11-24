@@ -67,7 +67,7 @@ void scene_error(char *str, struct framebuffer *fb)
 void progress(double fraction)
 {
 	fprintf(stdout, "%lf%% done.\n", fraction * 100.0);
-	scene_waiting(pf, fb);
+	scene_waiting(fraction, fb);
 	framebuffer_flip(fb);
 }
 
