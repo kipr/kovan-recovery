@@ -11,7 +11,7 @@
 int image_write(FILE *in, void (*progress_callback)(double))
 {
 	struct stat in_stat;
-	if(!fstat(fileno(in), &in_stat)) {
+	if(fstat(fileno(in), &in_stat)) {
 		LOG_PERROR("image fstat failed.");
 		return 0;
 	}

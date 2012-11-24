@@ -7,37 +7,35 @@
 
 void scene_black(struct framebuffer *fb)
 {
+	struct pixel white = pixel_create(255, 255, 255);
 	struct pixel black = pixel_create(0, 0, 0);
+	char *recovery = "Recovery Mode";
+	
+	draw_string(recovery, 160 - string_width(recovery) / 2, 10, white, fb);
 	framebuffer_fill(black, fb);
 }
 
 void scene_begin(struct framebuffer *fb)
 {
 	scene_black(fb);
-	char *recovery = "Recovery Mode";
 	char *waiting = "Insert Flash Drive";
 	struct pixel white = pixel_create(255, 255, 255);
-	draw_string(recovery, 160 - string_width(recovery) / 2, 10, white, fb);
 	draw_string(waiting, 160 - string_width(waiting) / 2, 110, white, fb);
 }
 
 void scene_wait(struct framebuffer *fb)
 {
 	scene_black(fb);
-	char *recovery = "Recovery Mode";
 	char *waiting = "Please Wait...";
 	struct pixel white = pixel_create(255, 255, 255);
-	draw_string(recovery, 160 - string_width(recovery) / 2, 10, white, fb);
 	draw_string(waiting, 160 - string_width(waiting) / 2, 110, white, fb);
 }
 
 void scene_loading(struct framebuffer *fb)
 {
 	scene_black(fb);
-	char *recovery = "Recovery Mode";
 	char *waiting = "Please Wait...";
 	struct pixel white = pixel_create(255, 255, 255);
-	draw_string(recovery, 160 - string_width(recovery) / 2, 10, white, fb);
 	draw_string(waiting, 160 - string_width(waiting) / 2, 110, white, fb);
 }
 
@@ -94,7 +92,6 @@ void kovan_recovery()
 	
 	LOG_NOTE("Mounted flash drive!");
 	
-	// TODO: Is this waiting scene even necessary?
 	scene_wait(fb);
 	framebuffer_flip(fb);
 	msleep(500);
@@ -116,7 +113,13 @@ void kovan_recovery()
 		return;
 	}
 	
-	image_write(fptr, progress);
+	if(!image_write(fptr, flash_drive_update_size(), progress)) {
+		scene_error("Image write failed! Exiting...", fb);
+		framebuffer_flip(fb);
+		msleep(1000);
+		return;
+	}
+	
 	fclose(fptr);
 	flash_drive_umount();
 	
