@@ -21,6 +21,9 @@ struct pixel
 
 struct pixel pixel_create(unsigned char r, unsigned char g, unsigned char b);
 
+static unsigned int string_width(char *str);
+static void draw_string(char *str, int x, int y, struct pixel p, struct framebuffer *fb);
+
 struct framebuffer *framebuffer_open(const char *dev);
 void framebuffer_write_pixel(unsigned short x, unsigned short y, struct pixel p, struct framebuffer *fb);
 void framebuffer_write_rect(unsigned short x, unsigned short y, unsigned short w, unsigned short h, struct pixel p, struct framebuffer *fb);
