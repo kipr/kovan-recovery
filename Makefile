@@ -1,4 +1,4 @@
-SOURCES = kovan-recovery.c flash_drive.c image.c
+SOURCES = kovan-recovery.c flash_drive.c image.c framebuffer.c
 OBJECTS = $(SOURCES:.c=.o)
 EXEC = kovan-recovery
 MY_CFLAGS += -Wall -Werror -Os -DDANGEROUS
