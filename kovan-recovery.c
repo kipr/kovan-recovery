@@ -11,8 +11,8 @@ void scene_black(struct framebuffer *fb)
 	struct pixel black = pixel_create(0, 0, 0);
 	char *recovery = "Recovery Mode";
 	
-	draw_string(recovery, 160 - string_width(recovery) / 2, 10, white, fb);
 	framebuffer_fill(black, fb);
+	draw_string(recovery, 160 - string_width(recovery) / 2, 10, white, fb);
 }
 
 void scene_begin(struct framebuffer *fb)
