@@ -113,7 +113,7 @@ void kovan_recovery()
 		return;
 	}
 	
-	if(!image_write(fptr, flash_drive_update_size(), progress)) {
+	if(!image_write(fptr, progress)) {
 		scene_error("Image write failed! Exiting...", fb);
 		framebuffer_flip(fb);
 		msleep(1000);
