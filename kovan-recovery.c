@@ -3,6 +3,8 @@
 #include "flash_drive.h"
 #include "image.h"
 
+#include <unistd.h>
+
 void scene_black(struct framebuffer *fb)
 {
 	struct pixel black = pixel_create(0, 0, 0);
@@ -64,6 +66,13 @@ void scene_error(char *str, struct framebuffer *fb)
 	draw_string(str, 160 - string_width(str) / 2, 110, white, fb);
 }
 
+void msleep(unsigned long msec)
+{
+	usleep(msec * 1000L);
+}
+
+struct framebuffer *fb;
+
 void progress(double fraction)
 {
 	fprintf(stdout, "%lf%% done.\n", fraction * 100.0);
@@ -71,14 +80,9 @@ void progress(double fraction)
 	framebuffer_flip(fb);
 }
 
-void msleep(unsigned long msec)
-{
-	usleep(msec * 1000L);
-}
-
 void kovan_recovery()
 {
-	struct framebuffer *fb = framebuffer_open("/dev/fb0");
+	fb = framebuffer_open("/dev/fb0");
 	
 	scene_begin(fb);
 	framebuffer_flip(fb);
@@ -96,7 +100,7 @@ void kovan_recovery()
 	msleep(500);
 	
 	if(flash_drive_update_type() == none) {
-		scene_error("Couldn't find update! Exiting...");
+		scene_error("Couldn't find update! Exiting...", fb);
 		framebuffer_flip(fb);
 		msleep(1000);
 		return;
