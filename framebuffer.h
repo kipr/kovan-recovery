@@ -19,10 +19,10 @@ struct pixel
 	unsigned char b;
 };
 
-struct pixel pixel_create(unsigned char r, unsigned char g, unsigned char b);
-
 unsigned int string_width(char *str);
 void draw_string(char *str, int x, int y, struct pixel p, struct framebuffer *fb);
+
+struct pixel pixel_create(unsigned char r, unsigned char g, unsigned char b);
 
 struct framebuffer *framebuffer_open(const char *dev);
 void framebuffer_write_pixel(unsigned short x, unsigned short y, struct pixel p, struct framebuffer *fb);
