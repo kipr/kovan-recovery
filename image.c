@@ -56,7 +56,7 @@ int image_write(FILE *in, void (*progress_callback)(double))
 				return 0;
 			}
 			unsigned have = BLOCK_SIZE - stream.avail_out;
-			if(fwrite(outbuff, 1, have, out) != have || ferror(out)) {
+			if(fwrite(outbuf, 1, have, out) != have || ferror(out)) {
 				LOG_PERROR("Writing block failed");
 				inflateEnd(&stream);
 				return Z_ERRNO;

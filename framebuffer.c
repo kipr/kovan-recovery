@@ -1,13 +1,14 @@
-// #include "framebuffer.h"
+#include "framebuffer.h"
 #include "consolas_16.h"
 
+#ifdef __linux__
 #include <linux/fb.h>
+#endif
 
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdio.h>
 #include <fcntl.h>
-#include <linux/fb.h>
 #include <sys/mman.h>
 #include <sys/ioctl.h>
 #include <string.h>
@@ -27,16 +28,6 @@ struct pixel
 	unsigned char g;
 	unsigned char b;
 };
-
-struct pixel pixel_create(unsigned char r, unsigned char g, unsigned char b);
-
-struct framebuffer *framebuffer_open(const char *dev);
-void framebuffer_write_pixel(unsigned short x, unsigned short y, struct pixel p, struct framebuffer *fb);
-void framebuffer_write_rect(unsigned short x, unsigned short y, unsigned short w, unsigned short h, struct pixel p, struct framebuffer *fb);
-void framebuffer_fill_rect(unsigned short x, unsigned short y, unsigned short w, unsigned short h, struct pixel p, struct framebuffer *fb);
-void framebuffer_fill(struct pixel p, struct framebuffer *fb);
-void framebuffer_flip(struct framebuffer *fb);
-void framebuffer_close();
 
 struct pixel pixel_create(unsigned char r, unsigned char g, unsigned char b)
 {
@@ -94,6 +85,7 @@ void draw_string(char *str, int x, int y, struct pixel p, struct framebuffer *fb
 
 struct framebuffer *framebuffer_open(const char *dev)
 {
+#ifdef __linux__
 	struct framebuffer *ret = (struct framebuffer *)malloc(sizeof(struct framebuffer));
 	
 	ret->fd = open(dev, O_RDWR);
@@ -118,6 +110,9 @@ struct framebuffer *framebuffer_open(const char *dev)
 	STB_SOMEFONT_CREATE(fontdata, fontpixels, STB_SOMEFONT_BITMAP_HEIGHT);
 	
 	return ret;
+#else
+	return 0;
+#endif
 }
 
 void framebuffer_write_pixel(unsigned short x, unsigned short y, struct pixel p, struct framebuffer *fb)
