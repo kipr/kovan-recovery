@@ -2,6 +2,7 @@ SOURCES = kovan-recovery.c flash_drive.c image.c framebuffer.c
 OBJECTS = $(SOURCES:.c=.o)
 EXEC = kovan-recovery
 MY_CFLAGS += -Wall -Werror -Os -DDANGEROUS
+MY_LIBS += -lz
 
 all: $(OBJECTS)
 	$(CC) $(LIBS) $(LDFLAGS) $(OBJECTS) $(MY_LIBS) -o $(EXEC)
