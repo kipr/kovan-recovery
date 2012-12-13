@@ -13,22 +13,6 @@
 #include <sys/ioctl.h>
 #include <string.h>
 
-struct framebuffer
-{
-	int fd;
-	struct fb_var_screeninfo vinfo;
-	struct fb_fix_screeninfo finfo;
-	unsigned char *display;
-	unsigned char *display_back;
-};
-
-struct pixel
-{
-	unsigned char r;
-	unsigned char g;
-	unsigned char b;
-};
-
 struct pixel pixel_create(unsigned char r, unsigned char g, unsigned char b)
 {
 	struct pixel ret;
