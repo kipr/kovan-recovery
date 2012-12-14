@@ -3,6 +3,7 @@
 #include <sys/mount.h>
 
 #define FLASH_DRIVE_UPDATE "/mnt/kovan_update.img"
+#define FLASH_DRIVE_COMPRESSED_UPDATE "/mnt/kovan_update.img.gz"
 
 int flash_drive_mount(void)
 {
@@ -16,17 +17,31 @@ int flash_drive_mount(void)
 	return 1;
 }
 
-enum update_type flash_drive_update_type(void)
+enum update_type flash_drive_update_type()
 {
-	FILE *fptr = flash_drive_update();
-	if(!fptr) return none;
-	fclose(fptr);
-	return image;
+	FILE *fptr = flash_drive_update(image);
+	if(fptr) {
+		fclose(fptr);
+		return image;
+	}
+	fptr = flash_drive_update(compressed_image);
+	if(fptr) {
+		fclose(fptr);
+		return compressed_image;
+	}
+	return none;
 }
 
-FILE *flash_drive_update(void)
+FILE *flash_drive_update(enum update_type type)
 {
-	return fopen(FLASH_DRIVE_UPDATE, "r");
+	switch(type) {
+	case image:
+		return fopen(FLASH_DRIVE_UPDATE, "r");
+	case compressed_image:
+		return fopen(FLASH_DRIVE_COMPRESSED_UPDATE, "r");
+	default: break;
+	}
+	return 0;
 }
 
 int flash_drive_umount(void)

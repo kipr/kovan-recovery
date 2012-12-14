@@ -96,10 +96,11 @@ void kovan_recovery()
 	framebuffer_flip(fb);
 	msleep(500);
 	
-	if(flash_drive_update_type() == none) {
+	enum update_type type = none;
+	if((type = flash_drive_update_type()) == none) {
 		scene_error("Couldn't find update! Exiting...", fb);
 		framebuffer_flip(fb);
-		msleep(1000);
+		msleep(5000);
 		return;
 	}
 	
@@ -107,16 +108,27 @@ void kovan_recovery()
 	framebuffer_flip(fb);
 	msleep(500);
 	
-	FILE *fptr = flash_drive_update();
+	FILE *fptr = flash_drive_update(type);
 	if(!fptr) {
 		LOG_ERROR("Failed to open update file.");
 		return;
 	}
 	
-	if(!image_write(fptr, progress)) {
+	int ret = 0;
+	switch(type) {
+	case image:
+		ret = image_write(fptr, progress);
+		break;
+	case compressed_image:
+		ret = image_write_compressed(fptr, progress);
+		break;
+	default: break;
+	}
+	
+	if(!ret) {
 		scene_error("Image write failed! Exiting...", fb);
 		framebuffer_flip(fb);
-		msleep(1000);
+		msleep(5000);
 		return;
 	}
 	
@@ -138,5 +150,9 @@ int main(int argc, char *argv[])
 	LOG_NOTE("kovan-recovery started");
 	kovan_recovery();
 	LOG_NOTE("kovan-recovery exiting");
+	
+	// This will cause a kernel panic (init can't exit)
+	// and reboot the device.
+	// Perhaps an actual reboot strategy would be better.
 	return 0;
 }

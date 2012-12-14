@@ -5,6 +5,7 @@ enum update_type
 {
 	none = 0,
 	image,
+	compressed_image,
 	diff
 };
 
