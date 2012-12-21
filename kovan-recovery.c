@@ -52,7 +52,7 @@ void scene_waiting(float pf, struct framebuffer *fb)
 void scene_done(struct framebuffer *fb)
 {
 	scene_black(fb);
-	char *str = "Done! Restarting in 5 seconds...";
+	char *str = "Done! Please Restart.";
 	struct pixel white = pixel_create(255, 255, 255);
 	draw_string(str, 160 - string_width(str) / 2, 110, white, fb);
 }
@@ -151,8 +151,7 @@ int main(int argc, char *argv[])
 	kovan_recovery();
 	LOG_NOTE("kovan-recovery exiting");
 	
-	// This will cause a kernel panic (init can't exit)
-	// and reboot the device.
-	// Perhaps an actual reboot strategy would be better.
+	for(;;);
+	
 	return 0;
 }
