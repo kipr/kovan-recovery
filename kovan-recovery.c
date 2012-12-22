@@ -98,7 +98,7 @@ void kovan_recovery()
 	
 	enum update_type type = none;
 	if((type = flash_drive_update_type()) == none) {
-		scene_error("Couldn't find update! Exiting...", fb);
+		scene_error("Couldn't find update!", fb);
 		framebuffer_flip(fb);
 		msleep(5000);
 		return;
@@ -126,7 +126,7 @@ void kovan_recovery()
 	}
 	
 	if(!ret) {
-		scene_error("Image write failed! Exiting...", fb);
+		scene_error("Image write failed!", fb);
 		framebuffer_flip(fb);
 		msleep(5000);
 		return;
