@@ -9,7 +9,7 @@ void scene_black(struct framebuffer *fb)
 {
 	struct pixel white = pixel_create(255, 255, 255);
 	struct pixel black = pixel_create(0, 0, 0);
-	char *recovery = "Recovery Mode";
+	char *recovery = "Recovery / Update Mode";
 	
 	framebuffer_fill(black, fb);
 	draw_string(recovery, 160 - string_width(recovery) / 2, 10, white, fb);
